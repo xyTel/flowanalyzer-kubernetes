@@ -1,0 +1,132 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  labels:
+    component: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: elasticsearch
+  template:
+    metadata:
+      labels:
+        component: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:5.6.6
+        env:
+          - name: xpack.security.enabled
+            value: "false"
+        ports:
+          - containerPort: 9200
+            name: http
+          - containerPort: 9300
+            name: transport
+---
+# Elasticsearch Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  labels:
+    component: elasticsearch
+spec:
+  type: ClusterIP
+  selector:
+    component: elasticsearch
+  ports:
+  - name: http
+    port: 9200
+    protocol: TCP
+  - name: transport
+    port: 9300
+    protocol: TCP
+---
+# Netflow v9 Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netflowv9 
+  labels:
+    component: netflowv9
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: netflowv9
+  template:
+    metadata:
+      labels:
+        component: netflowv9
+    spec:
+      containers:
+      - name: netflowv9
+        image: frankpetrilli/flow_collector:v1.0.0
+        ports:
+          - containerPort: 9995
+            name: collector
+---
+# Netflow v9 Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: netflowv9
+  labels:
+    component: netflowv9
+spec:
+  type: NodePort
+  selector:
+    component: netflowv9
+  ports:
+  - name: collector
+    port: 9995
+    protocol: UDP
+---
+# Kibana Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  labels:
+    component: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: kibana
+  template:
+    metadata:
+      labels:
+        component: kibana
+    spec:
+      containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:5.6.4
+        env:
+          - name: ELASTICSEARCH_URL
+            value: http://elasticsearch:9200
+          - name: XPACK_MONITORING_ENABLED
+            value: false
+        ports:
+        - containerPort: 5601
+          name: ui
+          protocol: TCP
+---
+# Kibana Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  labels:
+    component: kibana
+spec:
+  type: NodePort
+  selector:
+    component: kibana
+  ports:
+  - name: http
+    port: 5601
+    protocol: TCP
