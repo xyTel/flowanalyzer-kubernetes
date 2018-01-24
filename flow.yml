@@ -64,7 +64,10 @@ spec:
     spec:
       containers:
       - name: netflowv9
-        image: frankpetrilli/flow_collector:v1.0.0
+        image: frankpetrilli/flow_collector:v1.0.2
+        env:
+          - name: BULK_INSERT_COUNT
+            value: "50"
         ports:
           - containerPort: 9995
             name: collector
@@ -109,7 +112,7 @@ spec:
           - name: ELASTICSEARCH_URL
             value: http://elasticsearch:9200
           - name: XPACK_MONITORING_ENABLED
-            value: false
+            value: "false"
         ports:
         - containerPort: 5601
           name: ui

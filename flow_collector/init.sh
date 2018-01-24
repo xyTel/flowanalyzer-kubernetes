@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
+if [ -z $BULK_INSERT_COUNT ]
+then
+	BULK_INSERT_COUNT=700
+fi
+	
+
 if [ -z $1 ]
 then
 	printf "Usage: %s <es_host> <command...>" $0
 fi
 
-cat > netflow_options.py << EOF
-bulk_insert_count = 700
+cat > /root/data/netflow_options.py << EOF
+bulk_insert_count = $BULK_INSERT_COUNT
 netflow_v5_port = 2055
 netflow_v9_port = 9995
 ipfix_port = 4739
