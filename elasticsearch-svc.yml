@@ -1,0 +1,19 @@
+# Elasticsearch Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: flow-elasticsearch
+  labels:
+    component: flow-elasticsearch
+spec:
+  type: ClusterIP
+  selector:
+    component: flow-elasticsearch
+  ports:
+  - name: http
+    port: 9200
+    protocol: TCP
+  - name: transport
+    port: 9300
+    protocol: TCP
+

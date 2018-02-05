@@ -10,12 +10,9 @@ I wanted to package it as a Kubernetes manifest so it could be deployed easier.
 Notes
 ---
 
-* Only Netflow v9 is implemented in v1.0.0
+* All versions of flow collection are now accepted (Netflow v5/v9, IPFIX, sFlow)
 * No security is enabled on ElasticSearch or Kibana
-  * ElasticSearch isn't given a NodeIP, Kibana and Netflow are.
-* This was mostly to play around with it on an already-existing Kubernetes cluster.
-  * Thus, no guarantees on its fitness for your project.
-* You may want to use a different service method than NodeIP, since tracking the port to reconfigure your devices is a pain.
+* No guarantees on its fitness for your project.
 
 Source
 ---

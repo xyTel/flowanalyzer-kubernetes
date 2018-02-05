@@ -1,0 +1,15 @@
+# Kibana Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: flow-kibana
+  labels:
+    component: flow-kibana
+spec:
+  selector:
+    component: flow-kibana
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5601
+    protocol: TCP

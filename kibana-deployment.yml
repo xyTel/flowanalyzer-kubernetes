@@ -1,0 +1,30 @@
+# Kibana Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flow-kibana
+  labels:
+    component: flow-kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: flow-kibana
+  template:
+    metadata:
+      labels:
+        component: flow-kibana
+    spec:
+      containers:
+      - name: flow-kibana
+        image: docker.elastic.co/kibana/kibana:5.6.6
+        env:
+          - name: ELASTICSEARCH_URL
+            value: http://flow-elasticsearch:9200
+          - name: XPACK_MONITORING_ENABLED
+            value: "false"
+        ports:
+        - containerPort: 5601
+          name: ui
+          protocol: TCP
+

@@ -1,0 +1,33 @@
+# Netflow v9 Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flow-collector
+  labels:
+    component: flow-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: flow-collector
+  template:
+    metadata:
+      labels:
+        component: flow-collector
+    spec:
+      containers:
+      - name: flow-collector
+        image: frankpetrilli/flow_collector:v1.0.5
+        env:
+          - name: BULK_INSERT_COUNT
+            value: "10"
+        ports:
+          - containerPort: 2055
+            name: netflowv5
+          - containerPort: 9995
+            name: netflowv9 
+          - containerPort: 4739
+            name: ipfix
+          - containerPort: 6343
+            name: sflow
+

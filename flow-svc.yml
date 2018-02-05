@@ -1,0 +1,23 @@
+# Netflow v9 Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: flow-collector
+  labels:
+    component: flow-collector
+spec:
+  selector:
+    component: flow-collector
+  ports:
+  - name: netflowv5
+    port: 2055
+    protocol: UDP
+  - name: netflowv9
+    port: 9995
+    protocol: UDP
+  - name: ipfix
+    port: 4739
+    protocol: UDP
+  - name: sflow
+    port: 6343
+    protocol: UDP
