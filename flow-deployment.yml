@@ -1,4 +1,3 @@
-# Netflow v9 Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,35 +14,40 @@ spec:
       labels:
         component: flow-collector
     spec:
-      initContainers:
-      - name: flow-collector
-        image: frankpetrilli/flow_collector:v1.0.6
-        args: ["init"]
-        env:
-          - name: BULK_INSERT_COUNT
-            value: "10"
       containers:
       - name: flow-collector-netflow-v5
-        image: frankpetrilli/flow_collector:v1.0.6
+        image: frankpetrilli/flow_collector:v1.0.7
         args: ["netflow_v5"]
+        envFrom:
+        - configMapRef:
+            name: flow-config
         ports:
           - containerPort: 2055
             name: netflowv5
       - name: flow-collector-netflow-v9
-        image: frankpetrilli/flow_collector:v1.0.6
+        image: frankpetrilli/flow_collector:v1.0.7
         args: ["netflow_v9"]
+        envFrom:
+        - configMapRef:
+            name: flow-config
         ports:
           - containerPort: 9995
             name: netflowv9 
       - name: flow-collector-ipfix
-        image: frankpetrilli/flow_collector:v1.0.6
+        image: frankpetrilli/flow_collector:v1.0.7
         args: ["ipfix"]
+        envFrom:
+        - configMapRef:
+            name: flow-config
         ports:
           - containerPort: 4739
             name: ipfix
       - name: flow-collector-sflow
-        image: frankpetrilli/flow_collector:v1.0.6
+        image: frankpetrilli/flow_collector:v1.0.7
         args: ["sflow"]
+        envFrom:
+        - configMapRef:
+            name: flow-config
         ports:
           - containerPort: 6343
             name: sflow

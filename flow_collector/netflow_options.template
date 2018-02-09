@@ -1,0 +1,9 @@
+netflow_v5_port = 2055
+netflow_v9_port = 9995
+ipfix_port = 4739
+sflow_port = 6343
+bulk_insert_count = ${BULK_INSERT_COUNT}
+elasticsearch_host = "${FLOW_ELASTICSEARCH_SERVICE_HOST}"
+dns = True
+lookup_internal = False
+mac_lookup = True
