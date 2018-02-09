@@ -15,19 +15,35 @@ spec:
       labels:
         component: flow-collector
     spec:
-      containers:
+      initContainers:
       - name: flow-collector
-        image: frankpetrilli/flow_collector:v1.0.5
+        image: frankpetrilli/flow_collector:v1.0.6
+        args: ["init"]
         env:
           - name: BULK_INSERT_COUNT
             value: "10"
+      containers:
+      - name: flow-collector-netflow-v5
+        image: frankpetrilli/flow_collector:v1.0.6
+        args: ["netflow_v5"]
         ports:
           - containerPort: 2055
             name: netflowv5
+      - name: flow-collector-netflow-v9
+        image: frankpetrilli/flow_collector:v1.0.6
+        args: ["netflow_v9"]
+        ports:
           - containerPort: 9995
             name: netflowv9 
+      - name: flow-collector-ipfix
+        image: frankpetrilli/flow_collector:v1.0.6
+        args: ["ipfix"]
+        ports:
           - containerPort: 4739
             name: ipfix
+      - name: flow-collector-sflow
+        image: frankpetrilli/flow_collector:v1.0.6
+        args: ["sflow"]
+        ports:
           - containerPort: 6343
             name: sflow
-
